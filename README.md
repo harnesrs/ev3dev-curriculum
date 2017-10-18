@@ -57,7 +57,7 @@ This repository uses some of those great tools and tries to provide examples and
 
 First we start with the operating system on the EV3 programming brick.  Instead of using the default operating system
 that ships with the EV3 from Lego we'll dual boot using an SD card. The new os is called **ev3dev** and it's based on Linux.
-http://www.ev3dev.org/
+http://www.ev3dev.org/ 
 
 ev3dev can use many different programming languages, not just Python. However, we only care about Python.  In
 order to use Python we need to leverage the ev3dev Python library, which is called python-ev3dev, so that we have commands to communicate with the motors and

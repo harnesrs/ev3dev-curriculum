@@ -45,3 +45,42 @@ Authors: David Fisher and PUT_YOUR_NAME_HERE.
 # Observations you should make, run_to_rel_pos is easier to use since it uses encoders that are independent of speed.
 
 
+import ev3dev.ev3 as ev3
+import time
+
+def main():
+    print("--------------------------------------------")
+    print("  Timed driving")
+    print("--------------------------------------------")
+    ev3.Sound.speak("Timed driving").wait()
+
+    # Connect two large motors on output ports B and C
+    left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
+    right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
+
+    # Check that the motors are actually connected
+    assert left_motor.connected
+    assert right_motor.connected
+
+    time_s = 1  # Any value other than 0.
+    while time_s != 0:
+        left_sp = int(input("Enter a speed (0 to 900 dps): "))
+        if left_sp == 0:
+            break
+        inches = int(input("Distance to travel (inches): "))
+        if inches == 0:
+            break
+        left_motor.run_to_rel_pos(position_sp = 90 * inches, speed_sp = left_sp, stop_action='brake')
+        right_motor.run_to_rel_pos(position_sp=90 * inches, speed_sp=left_sp, stop_action='brake')
+        left_motor.wait_while(ev3.Motor.STATE_RUNNING)
+        right_motor.wait_while(ev3.Motor.STATE_RUNNING)
+        ev3.Sound.beep().wait()
+
+    print("Goodbye!")
+    ev3.Sound.speak("Goodbye").wait()
+
+
+# ----------------------------------------------------------------------
+# Calls  main  to start the ball rolling.
+# ----------------------------------------------------------------------
+main()

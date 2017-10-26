@@ -32,11 +32,12 @@ class Snatch3r(object):
         self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
 
     def turn_degrees(self, degrees, speed):
-        if degrees > 0:
-            left_sp = -speed
-            right_sp = speed
-        elif degrees == 0:
-            break
-        else:
-            left_sp = speed
-            right_sp = -speed
+        while True:
+            if degrees > 0:
+                left_sp = -speed
+                right_sp = speed
+            elif degrees == 0:
+                break
+            else:
+                left_sp = speed
+                right_sp = -speed

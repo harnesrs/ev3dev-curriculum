@@ -67,7 +67,7 @@ def main():
         if speed_deg_per_second == 0:
             break
         degrees_to_turn = int(input("Turn (degrees): "))
-        if inches_target == 0:
+        if degrees_to_turn == 0:
             break
 
         robot.turn_degrees(degrees_to_turn, speed_deg_per_second)

@@ -14,7 +14,7 @@ Authors: David Fisher and Tony Kaiser.
 #     ev3.Sound.speak("Turn degrees").wait()
 #   You will need to modify that code for this problem, but it is a handy starting point.
 
-# Todo. Create a method in your library called turn_degrees that receives the degrees_to_turn and turn_speed_sp
+# done. Create a method in your library called turn_degrees that receives the degrees_to_turn and turn_speed_sp
 #   To help you get started here is a potential method signature line that will be in your library.
 #
 #   def turn_degrees(self, degrees_to_turn, turn_speed_sp):
@@ -48,6 +48,9 @@ Authors: David Fisher and Tony Kaiser.
 # TODO: 6. Call over a TA or instructor to sign your team's checkoff sheet and do a code review.
 #
 # Observations you should make, using run_to_rel_pos is useful for accurate turns, but testing takes time.
+
+import ev3dev.ev3 as ev3
+import robot_controller as robo
 
 
 def main():

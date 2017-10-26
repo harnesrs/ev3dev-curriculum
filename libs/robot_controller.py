@@ -41,3 +41,5 @@ class Snatch3r(object):
             else:
                 left_sp = speed
                 right_sp = -speed
+            deg = degrees * 4
+            self.left_motor.run_to_rel_pos(deg)

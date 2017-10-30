@@ -15,7 +15,7 @@ import ev3dev.ev3 as ev3
 import time
 
 
-# TODO: 2. Have someone on your team run this program, as is, on the EV3 and make sure everyone understands the code.
+# done: 2. Have someone on your team run this program, as is, on the EV3 and make sure everyone understands the code.
 # There is currently no way to exit this program, so you will have to manually exit the program using your keyboard.
 #   Hit Control C to exit the program when you are done running it.  Ctrl c is a KeyboardInterrupt.
 # Can you see what the robot does and explain what each line of code is doing? Talk as a group to make sure.
@@ -52,10 +52,10 @@ def main():
     # Here is one for free...
     #  btn.on_up = handle_up_button
 
-    btn.on_up = handle_up_button()
-    btn.on_down = handle_down_button()
-    btn.on_left = handle_left_button()
-    btn.on_right = handle_right_button()
+    btn.on_up = lambda state: handle_up_button(state)
+    btn.on_down = lambda state: handle_down_button(state)
+    btn.on_left = lambda state: handle_left_button(state)
+    btn.on_right = lambda state: handle_right_button(state)
 
     # done. Note #4 is lower (this is TO DO #5 which you should do after #4).
     # Add a lambda callback for on_backspace.  The syntax of lambda is:

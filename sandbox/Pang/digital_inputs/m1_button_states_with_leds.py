@@ -47,13 +47,13 @@ def main():
     led_colors = [ev3.Leds.BLACK,  # This list is useful for the down button in TO DO 4.
                   ev3.Leds.GREEN,
                   ev3.Leds.RED,
-                  # ev3.Leds.ORANGE,  # Too close to another color in my opinion
-                  # ev3.Leds.YELLOW,  # Too close to another color in my opinion
+                  ev3.Leds.ORANGE,  # Too close to another color in my opinion
+                  ev3.Leds.YELLOW,  # Too close to another color in my opinion
                   ev3.Leds.AMBER]
 
     current_color_index = 0
     while True:
-        # TODO: 3. Implement the left, right, and up buttons as follows:
+        # DONE: 3. Implement the left, right, and up buttons as follows:
         #    When the up button is being pressed:
         #      -- print the word "up"
         #      -- turn off all LEDs
@@ -70,6 +70,17 @@ def main():
         #   Optional: You can also comment out the code above that does the 6 second red, green, off pattern.  It was
         #     there just to provide you with code examples for using the LEDs.  It does not need to run anymore.
         #     Just make sure not to comment out too much. ;)
+        if btn.up:
+            print('up')
+            ev3.Leds.all_off()
+        if btn.left:
+            print('left')
+            ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
+            ev3.Leds.RIGHT.off()
+        if btn.right:
+            print('right')
+            ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.RED)
+            ev3.Leds.LEFT.off()
 
         # TODO: 4. Implement the down button to change the color of both LEDs.
         #   The first press to down should make both LEDs GREEN, the next press makes them RED, then AMBER, then off.
@@ -78,6 +89,8 @@ def main():
         #   Since you are only allowed to use states, not event callbacks, this last request is a pain, but it's doable
         #     with a while loop that blocks code execution until the down instance variable is False.
         #     Use a time.sleep(0.01) inside the while loop to do nothing but wait for the button to be released.
+
+
 
         # TODO: 5. Formally test your work. When you think you have the problem complete run these tests:
         #   Press Left - Green left LED is on (try holding the button down for a few seconds when you to the press)

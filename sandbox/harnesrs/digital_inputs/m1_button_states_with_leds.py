@@ -5,8 +5,8 @@ This module lets you practice using the buttons on the EV3 as states.
 Normally we'll use event callbacks with buttons, but this example uses buttons as states for the purposes of example.
 Much like we did in harnesrs of the motors unit, later we will show you different (better) ways to use buttons.
 
-Authors: David Fisher and PUT_YOUR_NAME_HERE.
-"""  # TODO: 1. PUT YOUR NAME IN THE ABOVE LINE.
+Authors: David Fisher and Rachel Harness.
+"""  # DONE: 1. PUT YOUR NAME IN THE ABOVE LINE.
 
 # TODO: 2. Have someone on your team run this program as is on the EV3 and make sure everyone understands the code.
 #   You will exit the program by pressing the back button on the EV3 brick (button just below the screen).
@@ -43,15 +43,16 @@ def main():
     # print('Press the Back button on the EV3 to exit this program.')
     #
     # # Buttons on EV3 (the real focus of this module)
-    # btn = ev3.Button()  # Construct the one and only EV3 Button object
-    # led_colors = [ev3.Leds.BLACK,  # This list is useful for the down button in TO DO 4.
-    #               ev3.Leds.GREEN,
-    #               ev3.Leds.RED,
-    #               # ev3.Leds.ORANGE,  # Too close to another color in my opinion
-    #               # ev3.Leds.YELLOW,  # Too close to another color in my opinion
-    #               ev3.Leds.AMBER]
+    btn = ev3.Button()  # Construct the one and only EV3 Button object
+    led_colors = [ev3.Leds.BLACK,  # This list is useful for the down button in TO DO 4.
+                  ev3.Leds.GREEN,
+                  ev3.Leds.RED,
+                  # ev3.Leds.ORANGE,  # Too close to another color in my opinion
+                  # ev3.Leds.YELLOW,  # Too close to another color in my opinion
+                  ev3.Leds.AMBER]
 
     current_color_index = 0
+    times_down = 0
     while True:
         # TODO: 3. Implement the left, right, and up buttons as follows:
         #    When the up button is being pressed:
@@ -89,6 +90,29 @@ def main():
         #   Since you are only allowed to use states, not event callbacks, this last request is a pain, but it's doable
         #     with a while loop that blocks code execution until the down instance variable is False.
         #     Use a time.sleep(0.01) inside the while loop to do nothing but wait for the button to be released.
+        if btn.down:
+            times_down = times_down + 1
+            if times_down % 3 == 0:
+                ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
+                ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
+                while True:
+                    time.sleep(0.01)
+                    if btn.up:
+                        break
+            if times_down % 3 == 1:
+                ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.RED)
+                ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.RED)
+                while True:
+                    time.sleep(0.01)
+                    if btn.up:
+                        break
+            if times_down % 3 == 2:
+                ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.AMBER)
+                ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.AMBER)
+                while True:
+                    time.sleep(0.01)
+                    if btn.up:
+                        break
 
         # TODO: 5. Formally test your work. When you think you have the problem complete run these tests:
         #   Press Left - Green left LED is on (try holding the button down for a few seconds when you to the press)

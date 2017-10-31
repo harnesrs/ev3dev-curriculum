@@ -59,7 +59,7 @@ def main():
     dc = DataContainer()
     robot.arm_calibration()
 
-    # TODO: 4. Add the necessary IR handler callbacks as per the instructions above.
+    # done: 4. Add the necessary IR handler callbacks as per the instructions above.
     # Remote control channel 1 is for driving the crawler tracks around (none of these functions exist yet below).
     # Remote control channel 2 is for moving the arm up and down (all of these functions already exist below).
 
@@ -88,7 +88,7 @@ def main():
         btn.process()
         time.sleep(0.01)
 
-    # TODO: 2. Have everyone talk about this problem together then pick one  member to modify libs/robot_controller.py
+    # done: 2. Have everyone talk about this problem together then pick one  member to modify libs/robot_controller.py
     # as necessary to implement the method below as per the instructions in the opening doc string. Once the code has
     # been tested and shown to work, then have that person commit their work.  All other team members need to do a
     # VCS --> Update project...
@@ -103,16 +103,28 @@ def main():
 # TODO: 6. Implement the IR handler callbacks handlers.
 
 def handle_left_drive(state, robot):
-
+    while state:
+        robot.left_motor.run_forever(speed_sp = 600)
+        time.sleep(0.01)
+    robot.left_motor.stop()
 
 def handle_left_reverse(state, robot):
-
+    while state:
+        robot.left_motor.run_forever(speed_sp = -600)
+        time.sleep(0.01)
+    robot.left_motor.stop()
 
 def handle_right_drive(state, robot):
-
+    while state:
+        robot.right_motor.run_forever(speed_sp = 600)
+        time.sleep(0.01)
+    robot.right_motor.stop()
 
 def handle_right_reverse(state, robot):
-
+    while state:
+        robot.right_motor.run_forever(speed_sp=-600)
+        time.sleep(0.01)
+    robot.right_motor.stop()
 
 
 # TODO: 7. When your program is complete, call over a TA or instructor to sign your checkoff sheet and do a code review.

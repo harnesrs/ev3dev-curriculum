@@ -25,8 +25,8 @@
     -- Pressing the Back button will allow your program to end.  It should stop motors, turn on both green LEDs, and
        then print and say Goodbye.  You will need to implement a new robot method called shutdown to handle this task.
 
-Authors: David Fisher and PUT_YOUR_NAME_HERE.
-"""  # TODO: 1. PUT YOUR NAME IN THE ABOVE LINE.
+Authors: David Fisher and Rachel Harness.
+"""  # DONE: 1. PUT YOUR NAME IN THE ABOVE LINE.
 
 import ev3dev.ev3 as ev3
 import time
@@ -58,9 +58,19 @@ def main():
     robot = robo.Snatch3r()
     dc = DataContainer()
 
-    # TODO: 4. Add the necessary IR handler callbacks as per the instructions above.
+    # DONE: 4. Add the necessary IR handler callbacks as per the instructions above.
     # Remote control channel 1 is for driving the crawler tracks around (none of these functions exist yet below).
     # Remote control channel 2 is for moving the arm up and down (all of these functions already exist below).
+    channel_1 = ev3.RemoteControl(channel = 1)
+    channel_1.on_red_up = lambda state: green_left(state, robot)
+    channel_1.on_red_down = lambda state: red_left(state, robot)
+    channel_1.on_blue_up = lambda state: green_right(state, robot)
+    channel_1.on_blue_down = lambda state: red_right(state, robot)
+
+    channel_2 = ev3.RemoteControl(channel = 2)
+    channel_2.on_red_up = lambda state: handle_arm_up_button(state, robot)
+    channel_2.on_red_down = lambda state: handle_arm_down_button(state, robot)
+    channel_2.on_blue_up = lambda state: handle_calibrate_button(state, robot)
 
     # For our standard shutdown button.
     btn = ev3.Button()
@@ -69,7 +79,9 @@ def main():
     robot.arm_calibration()  # Start with an arm calibration in this program.
 
     while dc.running:
-        # TODO: 5. Process the RemoteControl objects.
+        # DONE: 5. Process the RemoteControl objects.
+        channel_1.process()
+        channel_2.process()
         btn.process()
         time.sleep(0.01)
 
@@ -138,6 +150,43 @@ def handle_shutdown(button_state, dc):
     """
     if button_state:
         dc.running = False
+
+def green_left(button_state, robot):
+    if button_state:
+        robot.left_motor.run_forever(speed_sp = 600)
+        ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
+        while True:
+            time.sleep(0.01)
+            if not button_state:
+                break
+
+def red_left(button_state, robot):
+    if button_state:
+        robot.left_motor.run_forever(speed_sp = -600)
+        ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.RED)
+        while True:
+            time.sleep(0.01)
+            if not button_state:
+                break
+
+def green_right(button_state, robot):
+    if button_state:
+        robot.right_motor.run_forever(speed_sp = 600)
+        ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
+        while True:
+            time.sleep(0.01)
+            if not button_state:
+                break
+
+def red_right(button_state, robot):
+    if button_state:
+        robot.right_motor.run_forever(speed_sp = -600)
+        ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.RED)
+        while True:
+            time.sleep(0.01)
+            if not button_state:
+                break
+
 
 # ----------------------------------------------------------------------
 # Calls  main  to start the ball rolling.

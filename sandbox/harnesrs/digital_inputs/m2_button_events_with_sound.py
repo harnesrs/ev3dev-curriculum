@@ -52,25 +52,10 @@ def main():
     # Here is one for free...
     #  btn.on_up = handle_up_button
     btn.on_up = handle_up_button
-    while True:
-        btn.process()
-        time.sleep(0.05)
     btn.on_down = handle_down_button
-    while True:
-        btn.process()
-        time.sleep(0.05)
     btn.on_left = handle_left_button
-    while True:
-        btn.process()
-        time.sleep(0.05)
     btn.on_right = handle_right_button
-    while True:
-        btn.process()
-        time.sleep(0.05)
     btn.on_backspace = lambda state: handle_shutdown(state)
-    while True:
-        btn.process()
-        time.sleep(0.05)
 
     # DONE: 5. Note #4 is lower (this is TO DO #5 which you should do after #4).
     # Add a lambda callback for on_backspace.  The syntax of lambda is:

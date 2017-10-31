@@ -51,6 +51,7 @@ def main():
                   # ev3.Leds.YELLOW,  # Too close to another color in my opinion
                   ev3.Leds.AMBER]
 
+    k = 0
     current_color_index = 0
     times_down = 0
     while True:
@@ -91,28 +92,9 @@ def main():
         #     with a while loop that blocks code execution until the down instance variable is False.
         #     Use a time.sleep(0.01) inside the while loop to do nothing but wait for the button to be released.
         if btn.down:
-            times_down = times_down + 1
-            if times_down % 3 == 0:
-                ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
-                ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
-                while True:
-                    time.sleep(0.01)
-                    if btn.up:
-                        break
-            if times_down % 3 == 1:
-                ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.RED)
-                ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.RED)
-                while True:
-                    time.sleep(0.01)
-                    if btn.up:
-                        break
-            if times_down % 3 == 2:
-                ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.AMBER)
-                ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.AMBER)
-                while True:
-                    time.sleep(0.01)
-                    if btn.up:
-                        break
+            print('down')
+            color = led_colors[k%0]
+
 
         # TODO: 5. Formally test your work. When you think you have the problem complete run these tests:
         #   Press Left - Green left LED is on (try holding the button down for a few seconds when you to the press)

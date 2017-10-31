@@ -71,3 +71,6 @@ class Snatch3r(object):
         self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)  # Blocks until the motor finishes running
         ev3.Sound.beep().wait()
 
+    def drive_left(self, speed, stop):
+        self.left_motor.run_forever(speed_sp = speed, stop_action = stop)
+

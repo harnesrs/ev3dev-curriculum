@@ -103,7 +103,7 @@ def main():
 # TODO: 6. Implement the IR handler callbacks handlers.
 
 def handle_left_drive(state, robot):
-    
+
 
 def handle_left_reverse(state, robot):
 

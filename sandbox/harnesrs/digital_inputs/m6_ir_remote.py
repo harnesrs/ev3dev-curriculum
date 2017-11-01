@@ -62,10 +62,10 @@ def main():
     # Remote control channel 1 is for driving the crawler tracks around (none of these functions exist yet below).
     # Remote control channel 2 is for moving the arm up and down (all of these functions already exist below).
     channel_1 = ev3.RemoteControl(channel = 1)
-    channel_1.on_red_up = lambda state: green_left(state, robot)
-    channel_1.on_red_down = lambda state: red_left(state, robot)
-    channel_1.on_blue_up = lambda state: green_right(state, robot)
-    channel_1.on_blue_down = lambda state: red_right(state, robot)
+    channel_1.on_red_up = lambda state: handle_left_drive(state, robot, channel_1)
+    channel_1.on_red_down = lambda state: handle_left_reverse(state, robot, channel_1)
+    channel_1.on_blue_up = lambda state: handle_right_drive(state, robot, channel_1)
+    channel_1.on_blue_down = lambda state: handle_right_reverse(state, robot, channel_1)
 
     channel_2 = ev3.RemoteControl(channel = 2)
     channel_2.on_red_up = lambda state: handle_arm_up_button(state, robot)
@@ -151,42 +151,77 @@ def handle_shutdown(button_state, dc):
     if button_state:
         dc.running = False
 
-def green_left(button_state, robot):
+def handle_left_drive(button_state, robot, channel):
     if button_state:
         robot.left_motor.run_forever(speed_sp = 600)
         ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
-        while True:
-            time.sleep(0.01)
-            if not button_state:
-                break
+        channel.process()
+    else:
+        robot.left_motor.stop(stop_action = ev3.Motor.STOP_ACTION_BRAKE)
+        ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
 
-def red_left(button_state, robot):
+def handle_left_reverse(button_state, robot, channel):
     if button_state:
         robot.left_motor.run_forever(speed_sp = -600)
         ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.RED)
-        while True:
-            time.sleep(0.01)
-            if not button_state:
-                break
+        channel.process()
+    else:
+        robot.left_motor.stop(stop_action = ev3.Motor.STOP_ACTION_BRAKE)
+        ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
 
-def green_right(button_state, robot):
+def handle_right_drive(button_state, robot, channel):
     if button_state:
         robot.right_motor.run_forever(speed_sp = 600)
         ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
-        while True:
-            time.sleep(0.01)
-            if not button_state:
-                break
+        channel.process()
+    else:
+        robot.right_motor.stop(stop_action = ev3.Motor.STOP_ACTION_BRAKE)
+        ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
 
-def red_right(button_state, robot):
+def handle_right_reverse(button_state, robot, channel):
     if button_state:
         robot.right_motor.run_forever(speed_sp = -600)
         ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.RED)
-        while True:
-            time.sleep(0.01)
-            if not button_state:
-                break
+        channel.process()
+    else:
+        robot.right_motor.stop(stop_action = ev3.Motor.STOP_ACTION_BRAKE)
+        ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
 
+# def handle_left_drive(state, robot):
+#     ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
+#     while True:
+#         robot.left_motor.run_forever(speed_sp=600)
+#         time.sleep(0.01)
+#         if not state:
+#             break
+#     robot.left_motor.stop()
+#     ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
+#
+# def handle_left_reverse(state, robot):
+#     ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.RED)
+#     while True:
+#         robot.left_motor.run_forever(speed_sp=-600)
+#         time.sleep(0.01)
+#         if not state:
+#             break
+#     robot.left_motor.stop()
+#     ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
+#
+# def handle_right_drive(state, robot):
+#     ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
+#     while state:
+#         robot.right_motor.run_forever(speed_sp=600)
+#         time.sleep(0.01)
+#     robot.right_motor.stop()
+#     ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
+#
+# def handle_right_reverse(state, robot):
+#     ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.RED)
+#     while state:
+#         robot.right_motor.run_forever(speed_sp=-600)
+#         time.sleep(0.01)
+#     robot.right_motor.stop()
+#     ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
 
 # ----------------------------------------------------------------------
 # Calls  main  to start the ball rolling.

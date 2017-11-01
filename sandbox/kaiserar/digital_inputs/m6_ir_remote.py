@@ -57,7 +57,6 @@ def main():
     ev3.Leds.all_off()  # Turn the leds off
     robot = robo.Snatch3r()
     dc = DataContainer()
-    robot.arm_calibration()
 
     # done: 4. Add the necessary IR handler callbacks as per the instructions above.
     # Remote control channel 1 is for driving the crawler tracks around (none of these functions exist yet below).
@@ -103,36 +102,36 @@ def main():
 # TODO: 6. Implement the IR handler callbacks handlers.
 
 def handle_left_drive(state, robot):
-    ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
-    while state:
+    if state:
         robot.left_motor.run_forever(speed_sp = 600)
-        time.sleep(0.01)
-    robot.left_motor.stop()
-    ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
+        ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
+    else:
+        robot.left_motor.stop()
+        ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
 
 def handle_left_reverse(state, robot):
-    ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.RED)
-    while state:
+    if state:
         robot.left_motor.run_forever(speed_sp = -600)
-        time.sleep(0.01)
-    robot.left_motor.stop()
-    ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
+        ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.RED)
+    else:
+        robot.left_motor.stop()
+        ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
 
 def handle_right_drive(state, robot):
-    ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
-    while state:
+    if state:
         robot.right_motor.run_forever(speed_sp = 600)
-        time.sleep(0.01)
-    robot.right_motor.stop()
-    ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
+        ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
+    else:
+        robot.right_motor.stop()
+        ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
 
 def handle_right_reverse(state, robot):
-    ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.RED)
-    while state:
+    if state:
         robot.right_motor.run_forever(speed_sp=-600)
-        time.sleep(0.01)
-    robot.right_motor.stop()
-    ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
+        ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.RED)
+    else:
+        robot.right_motor.stop()
+        ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
 
 
 # TODO: 7. When your program is complete, call over a TA or instructor to sign your checkoff sheet and do a code review.

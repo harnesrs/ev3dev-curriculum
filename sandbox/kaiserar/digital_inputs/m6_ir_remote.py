@@ -99,7 +99,7 @@ def main():
 # Some event handlers have been written for you (ones for the arm).
 # Movement event handlers have not been provided.
 # ----------------------------------------------------------------------
-# TODO: 6. Implement the IR handler callbacks handlers.
+# done: 6. Implement the IR handler callbacks handlers.
 
 def handle_left_drive(state, robot):
     if state:
@@ -134,7 +134,7 @@ def handle_right_reverse(state, robot):
         ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
 
 
-# TODO: 7. When your program is complete, call over a TA or instructor to sign your checkoff sheet and do a code review.
+# done: 7. When your program is complete, call over a TA or instructor to sign your checkoff sheet and do a code review.
 #
 # Observations you should make, IR buttons are a fun way to control the robot.
 

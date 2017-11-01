@@ -103,28 +103,36 @@ def main():
 # TODO: 6. Implement the IR handler callbacks handlers.
 
 def handle_left_drive(state, robot):
+    ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
     while state:
         robot.left_motor.run_forever(speed_sp = 600)
         time.sleep(0.01)
     robot.left_motor.stop()
+    ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
 
 def handle_left_reverse(state, robot):
+    ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.RED)
     while state:
         robot.left_motor.run_forever(speed_sp = -600)
         time.sleep(0.01)
     robot.left_motor.stop()
+    ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
 
 def handle_right_drive(state, robot):
+    ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
     while state:
         robot.right_motor.run_forever(speed_sp = 600)
         time.sleep(0.01)
     robot.right_motor.stop()
+    ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
 
 def handle_right_reverse(state, robot):
+    ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.RED)
     while state:
         robot.right_motor.run_forever(speed_sp=-600)
         time.sleep(0.01)
     robot.right_motor.stop()
+    ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
 
 
 # TODO: 7. When your program is complete, call over a TA or instructor to sign your checkoff sheet and do a code review.

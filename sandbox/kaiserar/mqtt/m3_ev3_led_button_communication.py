@@ -116,7 +116,7 @@ def main():
     btn.on_left = lambda state: handle_button_press(state, mqtt_client, "Left")
     btn.on_right = lambda state: handle_button_press(state, mqtt_client, "Right")
     btn.on_backspace = lambda state: handle_shutdown(state, my_delegate)
-
+ 
     while my_delegate.running:
         btn.process()
         time.sleep(0.01)

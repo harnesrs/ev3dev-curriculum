@@ -72,6 +72,7 @@ class Snatch3r(object):
         ev3.Sound.beep().wait()
 
     def shutdown(self):
+        self.running = False
         self.left_motor.stop(stop_action = ev3.Motor.STOP_ACTION_BRAKE)
         self.right_motor.stop(stop_action = ev3.Motor.STOP_ACTION_BRAKE)
         ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
@@ -98,4 +99,12 @@ class Snatch3r(object):
         self.left_motor.stop(stop_action = action)
         self.right_motor.stop(stop_action = action)
 
+    def loop_forever(self):
+        # This is a convenience method that I don't really recommend for most programs other than m5.
+        #   This method is only useful if the only input to the robot is coming via mqtt.
+        #   MQTT messages will still call methods, but no other input or output happens.
+        # This method is given here since the concept might be confusing.
+        self.running = True
+        while self.running:
+            time.sleep(0.1)  # Do nothing (except receive MQTT messages) until an MQTT message calls shutdown.
 

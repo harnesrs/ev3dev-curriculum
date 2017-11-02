@@ -81,6 +81,11 @@ def follow_the_line(robot, white_level, black_level):
     # Optional extra - For a harder challenge could you drive on the black line and handle left or right turns?
     while True:
         if robot.color_sensor.color == black_level:
+            robot.forward_drive(300, 300)
+        else:
+            robot.right_drive(300)
+        if robot.touch_sensor:
+            break
 
     robot.stop()
     ev3.Sound.speak("Done")

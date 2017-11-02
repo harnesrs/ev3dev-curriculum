@@ -118,23 +118,19 @@ def main():
 # TODO: 4. Implement the functions for the drive button callbacks.
 
 def handle_forward_button(client, lspeed, rspeed):
-
-
+    client.send_message("forward_drive", [lspeed, rspeed])
 
 def handle_left_button(client, lspeed):
-
-
+    client.send_message("left_drive", [lspeed,])
 
 def handle_stop_button(client):
-
-
+    client.send_message("stop")
 
 def handle_right_button(client, rspeed):
-
-
+    client.send_message("right_drive", [rspeed,])
 
 def handle_back_button(client, lspeed, rspeed):
-
+    client.send_message("reverse_drive", [lspeed, rspeed])
 
 
 

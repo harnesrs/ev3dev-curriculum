@@ -134,7 +134,7 @@ def handle_button_press(button_state, mqtt_client, button_name):
     if button_state:
         print("{} button was pressed".format(button_name))
 
-        # TODO: 4. Send a message using MQTT that will:
+        # done: 4. Send a message using MQTT that will:
         #   -- Call the method called "button_pressed" on the delegate at the other end of the pipe.
         #   -- Pass the parameters [button_name] as a list.
         # This is meant to help you learn the mqtt_client.send_message syntax.
@@ -150,7 +150,7 @@ def handle_button_press(button_state, mqtt_client, button_name):
 # Press the buttons on the EV3 (up, down, left, right) and watch the Tkinter GUI on your PC.
 # When done, press the Back button on EV3 to end that program and click Quit on the Tkinter GUI.
 
-# TODO: 6. Call over a TA or instructor to sign your team's checkoff sheet (demo both LEDs and buttons).
+# done: 6. Call over a TA or instructor to sign your team's checkoff sheet (demo both LEDs and buttons).
 #
 # Observations you should make, when communicating using MQTT there is always a program running on EV3 and on your PC
 #   at the same time.  To make your life easier, you only write one of those programs this time (the on on the EV3).

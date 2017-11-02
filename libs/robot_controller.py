@@ -26,6 +26,8 @@ class Snatch3r(object):
         self.right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
         self.arm_motor = ev3.MediumMotor(ev3.OUTPUT_A)
         self.touch_sensor = ev3.TouchSensor()
+        self.color_sensor = ev3.ColorSensor()
+        assert self.color_sensor
 
     def drive_inches(self, inches, speed):
         self.left_motor.run_to_rel_pos(position_sp=90 * inches, speed_sp=speed, stop_action='brake')

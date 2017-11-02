@@ -35,6 +35,7 @@ def main():
     # done: 2. Setup an mqtt_client.  Notice that since you don't need to receive any messages you do NOT need to have
     # a MyDelegate class.  Simply construct the MqttClient with no parameter in the constructor (easy).
     mqtt_client = com.MqttClient()  # Delete this line, it was added temporarily so that the code we gave you had no errors.
+    mqtt_client.connect_to_ev3()
 
     root = tkinter.Tk()
     root.title("MQTT Remote")
@@ -118,19 +119,26 @@ def main():
 # TODO: 4. Implement the functions for the drive button callbacks.
 
 def handle_forward_button(client, lspeed, rspeed):
-    client.send_message("forward_drive", [lspeed, rspeed])
+    l = int(lspeed.get())
+    r = int(rspeed.get())
+    client.send_message("forward_drive", [l, r])
+
 
 def handle_left_button(client, lspeed):
-    client.send_message("left_drive", [lspeed,])
+    l = int(lspeed.get())
+    client.send_message("left_drive", [l,])
 
 def handle_stop_button(client):
     client.send_message("stop")
 
 def handle_right_button(client, rspeed):
-    client.send_message("right_drive", [rspeed,])
+    r = int(rspeed.get())
+    client.send_message("right_drive", [r,])
 
 def handle_back_button(client, lspeed, rspeed):
-    client.send_message("reverse_drive", [lspeed, rspeed])
+    l = int(lspeed.get())
+    r = int(rspeed.get())
+    client.send_message("reverse_drive", [l, r])
 
 
 

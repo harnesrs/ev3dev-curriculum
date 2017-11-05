@@ -118,5 +118,5 @@ class Snatch3r(object):
 
 
     def right_turn(self, lspeed, rspeed):
-        
+
 

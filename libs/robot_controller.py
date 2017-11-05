@@ -114,3 +114,9 @@ class Snatch3r(object):
         while self.running:
             time.sleep(0.1)  # Do nothing (except receive MQTT messages) until an MQTT message calls shutdown.
 
+    def left_turn(self, lspeed, rspeed):
+
+
+    def right_turn(self, lspeed, rspeed):
+        
+

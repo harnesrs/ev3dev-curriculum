@@ -28,6 +28,8 @@ class Snatch3r(object):
         self.touch_sensor = ev3.TouchSensor()
         self.color_sensor = ev3.ColorSensor()
         assert self.color_sensor
+          self.ir_sensor = ev3.InfraredSensor()
+          assert self.ir_sensor
 
     def drive_inches(self, inches, speed):
         self.left_motor.run_to_rel_pos(position_sp=90 * inches, speed_sp=speed, stop_action='brake')

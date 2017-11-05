@@ -30,6 +30,8 @@ class Snatch3r(object):
         assert self.color_sensor
         self.ir_sensor = ev3.InfraredSensor()
         assert self.ir_sensor
+        self.pixy = ev3.Sensor(driver_name="pixy-lego")
+        assert self.pixy
 
     def drive_inches(self, inches, speed):
         self.left_motor.run_to_rel_pos(position_sp=90 * inches, speed_sp=speed, stop_action='brake')

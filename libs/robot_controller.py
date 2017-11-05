@@ -118,5 +118,8 @@ class Snatch3r(object):
         self.left_motor.run_forever(speed_sp = lspeed)
         self.right_motor.run_forever(speed_sp = rspeed)
 
+    def seek_beacon(self):
+
+
 
 

@@ -109,7 +109,7 @@ def seek_beacon(robot):
                 robot.stop()
                 print("Heading too far off")
 
- 
+
 
 
 

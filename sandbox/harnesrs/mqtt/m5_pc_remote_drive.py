@@ -130,21 +130,19 @@ def handle_forward_button(mqtt_client, left_speed_entry, right_speed_entry):
 def handle_right_button(mqtt_client, left_speed_entry, right_speed_entry):
     left_speed = int(left_speed_entry.get())
     right_speed = int(right_speed_entry.get())
-    mqtt_client.send_message('right_drive', [left_speed, right_speed])
+    mqtt_client.send_message('right_drive', [right_speed])
 
 def handle_left_button(mqtt_client, left_speed_entry, right_speed_entry):
     left_speed = int(left_speed_entry.get())
     right_speed = int(right_speed_entry.get())
-    mqtt_client.send_message('left_drive', [left_speed, right_speed])
+    mqtt_client.send_message('left_drive', [left_speed])
 
 def handle_back_button(mqtt_client, left_speed_entry, right_speed_entry):
     left_speed = int(left_speed_entry.get())
     right_speed = int(right_speed_entry.get())
     mqtt_client.send_message('reverse_drive', [left_speed, right_speed])
 
-def handle_stop_button(mqtt_client, left_speed_entry, right_speed_entry):
-    left_speed = int(left_speed_entry.get())
-    right_speed = int(right_speed_entry.get())
+def handle_stop_button(mqtt_client):
     mqtt_client.send_message('stop')
 
 # Arm command callbacks

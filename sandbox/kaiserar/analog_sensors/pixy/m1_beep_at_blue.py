@@ -36,7 +36,7 @@ def main():
         #   assert self.pixy
         # Then here you can use a command like width = robot.pixy.value(3)
         print("(X,Y) = ({}, {})  Width = {}  Height = {}".format(robot.pixy.value(1), robot.pixy.value(2), robot.pixy.value(3), robot.pixy.value(4)))
-        if robot.pixy.value3 > 0:
+        while robot.pixy.value(3) > 0:
             ev3.Sound.beep()
             time.sleep(1.5)
 

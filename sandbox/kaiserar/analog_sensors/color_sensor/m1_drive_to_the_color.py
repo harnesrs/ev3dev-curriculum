@@ -94,11 +94,11 @@ def drive_to_color(button_state, robot, color_to_seek):
         #   self.color_sensor = ev3.ColorSensor()
         #   assert self.color_sensor
         # Then here you can use a command like robot.color_sensor.color to check the value
-        color = robot.color_sensor.color
         robot.forward_drive(300, 300)
         while True:
-            if color ==color_to_seek:
+            if robot.color_sensor.color == color_to_seek:
                 break
+            time.sleep(0.01)
         robot.stop()
 
         # TODO: 4. Call over a TA or instructor to sign your team's checkoff sheet.

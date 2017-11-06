@@ -122,6 +122,37 @@ class Snatch3r(object):
 
     def seek_beacon(self):
 
+        beacon_seeker = ev3.BeaconSeeker(channel=1)
+
+        forward_speed = 300
+        turn_speed = 100
+
+        while not self.touch_sensor.is_pressed:
+            current_heading = beacon_seeker.heading
+            current_distance = beacon_seeker.distance
+            if current_distance == -128:
+                print('distance: -128, searching')
+                self.turn(-turn_speed, turn_speed)
+            else:
+                if math.fabs(current_heading) < 2:
+                    print("On the right heading. Distance: ", current_distance)
+                    if current_distance == 1:
+                        self.stop()
+                        return True
+                    else:
+                        self.forward_drive(forward_speed, forward_speed)
+                elif 2 < math.fabs(current_heading) < 10:
+                    if current_heading < 0:
+                        self.turn(-turn_speed, turn_speed)
+                    elif current_heading > 0:
+                        self.turn(turn_speed, -turn_speed)
+                elif math.fabs(current_heading) > 10:
+                    print("heading too great, searching")
+                    self.turn(turn_speed, -turn_speed)
+
+            time.sleep(0.2)
+
+
 
 
 

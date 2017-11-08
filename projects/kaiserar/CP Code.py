@@ -28,7 +28,7 @@ def mqtt_connect():
     client.connect_to_ev3()
 
 
-def test_prox():
+def test_prox(): 
     robot = robo.Snatch3r()
     while not robot.touch_sensor:
         print(robot.ir_sensor.proximity)

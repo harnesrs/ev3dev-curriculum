@@ -81,7 +81,7 @@ def hand_lbutton(client, speed):
     client.send_message("left", [speed])
 
 def hand_sbutton(client):
-    client.send_message("stop", [])
+    client.send_message("stop", []) 
 
 def hand_rbutton(client, speed):
     client.send_message("right", [speed])

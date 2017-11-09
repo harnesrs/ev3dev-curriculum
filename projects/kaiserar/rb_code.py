@@ -4,8 +4,7 @@ import mqtt_remote_method_calls as com
 import ev3dev.ev3 as ev3
 import time
 import robot_controller as robo
-import tkinter
-from tkinter import ttk
+
 
 
 def mqtt_connect():
@@ -15,6 +14,7 @@ def mqtt_connect():
 
 class Delagate(object):
     def __init__(self):
+        self.mode = 'mqtt'
         self.robot = robo.Snatch3r
     def forward(self, lspeed, rspeed):
         while True:
@@ -34,9 +34,13 @@ class Delagate(object):
 
 
 def main():
+
     # mqtt connect
     delegate = Delagate()
     client = com.MqttClient(delegate)
     client.connect_to_pc()
+    print('connected')
 
     #
+
+main()

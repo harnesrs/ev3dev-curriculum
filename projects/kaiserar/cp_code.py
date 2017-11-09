@@ -79,3 +79,34 @@ def main():
     delegate = Delegate()
     client = com.MqttClient(delegate)
     client.connect_to_ev3()
+
+    speed = sbox.get()
+
+    # tkinter buttons
+    fbutton['command'] = lambda: hand_fbutton(client, speed)
+    root.bind('<Up>', lambda event: hand_fbutton(client, speed))
+    lbutton['command'] = lambda: hand_lbutton(client, speed)
+    root.bind('<Left>', lambda event: hand_lbutton(client, speed))
+    sbutton['command'] = lambda: hand_sbutton(client)
+    root.bind('<space>', lambda event: hand_sbutton(client))
+    rbutton['command'] = lambda: hand_rbutton(client, speed)
+    root.bind('<Right>', lambda event: hand_rbutton(client, speed))
+    bbutton['command'] = lambda: hand_bbutton(client, speed)
+    root.bind('<Down>', lambda event: hand_bbutton(client, speed))
+
+
+# handle functions
+def hand_fbutton(client, speed):
+    client.send_message("forward_drive", [speed, speed])
+
+def hand_lbutton(client, speed):
+    client.send_message("left_drive", [speed])
+
+def hand_sbutton(client):
+    client.send_message("stop", [])
+
+def hand_rbutton(client, speed):
+    client.send_message("right_drive", [speed])
+
+def hand_bbutton(client, speed):
+    client.send_message("reverse_drive", [speed, speed])

@@ -8,30 +8,6 @@ import tkinter
 from tkinter import ttk
 
 
-def tkinter_window():
-    root = tkinter.Tk()
-    root.title("Controller")
-    frame1 = ttk.Frame(root, padding = 30)
-    frame1.grid()
-    fbutton = ttk.Button(frame1, text = "Forward")
-    fbutton.grid(row=0, column=1)
-    lbutton = ttk.Button(frame1, text = "Left Turn")
-    lbutton.grid(row=1, column=0)
-    sbutton = ttk.Button(frame1, text = "Brake")
-    sbutton.grid(row=1, column=1)
-    rbutton = ttk.Button(frame1, text = "Right Turn")
-    rbutton.grid(row=1, column=2)
-    bbutton = ttk.Button(frame1, text = "Reverse")
-    bbutton.grid(row=2, column=1)
-    slabel = ttk.Label(frame1, text = "Speed:")
-    slabel.grid(row=3, column=0)
-    sbox = ttk.Scale(frame1, from_=0, to=800)
-    sbox.grid(row=3, column=1)
-    sread = ttk.Label(frame1, text="{}".format(sbox.get()))
-    sread.grid(row=3, column=2)
-    mlabel = ttk.Label(frame1, text = "")
-    mlabel.grid(row=4, column=1)
-    root.mainloop()
 
 def mqtt_connect():
     delegate = Delegate()
@@ -44,9 +20,6 @@ class Delegate(object):
     def display_message(self, mlabel):
         pass
 
-
-
-tkinter_window()
 
 
 def main():
@@ -67,19 +40,19 @@ def main():
     bbutton.grid(row=2, column=1)
     slabel = ttk.Label(frame1, text="Speed:")
     slabel.grid(row=3, column=0)
-    sbox = ttk.Scale(frame1, from_=0, to=800)
+    x = tkinter.IntVar()
+    sbox = ttk.Scale(frame1, from_=0, to=8, variable=x)
     sbox.grid(row=3, column=1)
-    sread = ttk.Label(frame1, text="{}".format(sbox.get()))
+    sread = ttk.Label(frame1, textvariable=x)
     sread.grid(row=3, column=2)
     mlabel = ttk.Label(frame1, text="")
     mlabel.grid(row=4, column=1)
-    root.mainloop()
+
 
     # mqtt connect
     delegate = Delegate()
     client = com.MqttClient(delegate)
     client.connect_to_ev3()
-    print('connected')
 
     speed = sbox.get()
 
@@ -94,6 +67,10 @@ def main():
     root.bind('<Right>', lambda event: hand_rbutton(client, speed))
     bbutton['command'] = lambda: hand_bbutton(client, speed)
     root.bind('<Down>', lambda event: hand_bbutton(client, speed))
+
+
+    root.mainloop()
+
 
 
 # handle functions
@@ -111,3 +88,6 @@ def hand_rbutton(client, speed):
 
 def hand_bbutton(client, speed):
     client.send_message("reverse", [speed, speed])
+
+
+main()

@@ -39,7 +39,6 @@ def main():
     delegate = Delagate()
     client = com.MqttClient(delegate)
     client.connect_to_pc()
-    print('connected')
 
     #
 

@@ -10,28 +10,30 @@ import time
 import mqtt_remote_method_calls as com
 
 robot = robo.Snatch3r()
-robot.pixy.mode = 'SIG1'
 left_color = 5
 right_color = 2
 
 class MyDelegate(object):
 
     def __init__(self):
-        pass
+        self.direction = 0
 
     def drive_button(self):
         robot.forward_drive(300, 300)
-        ev3.Sound.speak('Driving')
+        ev3.Sound.speak('Driving').wait()
 
     def stop_button(self):
         robot.stop()
-        ev3.Sound.speak('Stopping')
+        ev3.Sound.speak('Stopping').wait()
 
     def left_color(self, color):
         left_color = color
 
     def right_color(self, color):
         right_color = color
+
+    def direction(self):
+        return self.direction
 
 
 def main():
@@ -83,24 +85,28 @@ def handle_up_button(mqtt_client, direction):
     degrees = (direction * 90) % 360
     robot.turn_degrees(-degrees, 300)
     direction = 0
+    robot.forward_drive(300, 300)
 
 def handle_down_button(mqtt_client, direction):
     mqtt_client.send_message('turn_backward')
     degrees = (direction * 90) % 360 + 180
     robot.turn_degrees(-degrees, 300)
     direction = 2
+    robot.forward_drive(300, 300)
 
 def handle_right_button(mqtt_client, direction):
     mqtt_client.send_message('turn_right')
     degrees = (direction * 90) % 360 + 90
     robot.turn_degrees(-degrees, 300)
     direction = 1
+    robot.forward_drive(300, 300)
 
 def handle_left_button(mqtt_client, direction):
     mqtt_client.send_message('turn_left')
     degrees = (direction * 90) % 360 + 270
     robot.turn_degrees(-degrees, 300)
     direction = 3
+    robot.forward_drive(300, 300)
 
 def turn_left(mqtt_client, direction):
     robot.turn_degrees(90, 300)

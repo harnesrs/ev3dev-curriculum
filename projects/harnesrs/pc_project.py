@@ -2,7 +2,6 @@ import tkinter
 from tkinter import ttk
 import mqtt_remote_method_calls as com
 
-color_list = [0, 1, 'blue', 'green', 4, 'red']
 
 class MyDelegate(object):
     def __init__(self):
@@ -24,6 +23,9 @@ def main():
     my_delegate = MyDelegate()
     mqtt_client = com.MqttClient(my_delegate)
     mqtt_client.connect_to_ev3()
+
+    color_list = [0, 1, 'blue', 'green', 4, 'red']
+    direction_list = ['forward', 'right', 'backward', 'left']
 
     root = tkinter.Tk()
     root.title('Color')
@@ -48,7 +50,7 @@ def main():
 
     set_left_color = ttk.Button(main_frame, text = 'Set left color')
     set_left_color.grid(row = 2, column = 1)
-    set_left_color['command'] = lambda: set_left_color_button(mqtt_client, left.get())
+    set_left_color['command'] = lambda: set_left_color_button(mqtt_client, int(left.get()), color_list)
 
     red_right = ttk.Radiobutton(main_frame, text='Red', variable = right, value = 5)
     red_right.grid(row=0, column=4)
@@ -64,7 +66,7 @@ def main():
 
     set_right_color = ttk.Button(main_frame, text = 'Set right color')
     set_right_color.grid(row = 2, column = 5)
-    set_right_color['command'] = lambda: set_right_color_button(mqtt_client, right.get())
+    set_right_color['command'] = lambda: set_right_color_button(mqtt_client, int(right.get()), color_list)
 
     drive_button = ttk.Button(main_frame, text = 'Drive')
     drive_button.grid(row = 3, column = 2)
@@ -76,6 +78,7 @@ def main():
 
     direction = ttk.Button(main_frame, text = 'Direction')
     direction.grid(row = 4, column = 3)
+    direction['command'] = lambda: direction_button(mqtt_client, direction_list)
 
     quit_button = ttk.Button(main_frame, text = 'Quit')
     quit_button.grid(row = 5, column = 2)
@@ -93,12 +96,16 @@ def handle_stop_button(mqtt_client):
     print('Stopping')
     mqtt_client.send_message('stop_button')
 
-def set_left_color_button(mqtt_client, color):
+def set_left_color_button(mqtt_client, color, color_list):
     print('Turn left color is:', color_list[color])
     mqtt_client.send_message('left_color', [color])
 
-def set_right_color_button(mqtt_client, color):
+def set_right_color_button(mqtt_client, color, color_list):
     print('Turn right color is:', color_list[color])
     mqtt_client.send_message('right_color', [color])
+
+def direction_button(mqtt_client, direction_list):
+    direction = mqtt_client.send_message('direction')
+    print('I am facing', direction_list[direction])
 
 main()

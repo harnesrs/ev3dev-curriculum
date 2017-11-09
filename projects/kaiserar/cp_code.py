@@ -79,5 +79,3 @@ def main():
     delegate = Delegate()
     client = com.MqttClient(delegate)
     client.connect_to_ev3()
-
-    

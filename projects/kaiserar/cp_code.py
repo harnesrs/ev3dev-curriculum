@@ -9,15 +9,10 @@ from tkinter import ttk
 
 
 
-def mqtt_connect():
-    delegate = Delegate()
-    client = com.MqttClient(delegate)
-    client.connect_to_ev3()
-
-class Delegate(object):
+class Delegate(object, y):
     def __init__(self):
         pass
-    def display_message(self, mlabel):
+    def display_message(self, string):
         pass
 
 
@@ -45,16 +40,18 @@ def main():
     sbox.grid(row=3, column=1)
     sread = ttk.Label(frame1, textvariable=x)
     sread.grid(row=3, column=2)
-    mlabel = ttk.Label(frame1, text="")
+    y = tkinter.StringVar()
+    mlabel = ttk.Label(frame1, textvariable=y)
+    y.set("")
     mlabel.grid(row=4, column=1)
 
 
     # mqtt connect
-    delegate = Delegate()
+    delegate = Delegate(y)
     client = com.MqttClient(delegate)
     client.connect_to_ev3()
 
-    speed = sbox.get()
+    speed = sbox.get() * 100
 
     # tkinter buttons
     fbutton['command'] = lambda: hand_fbutton(client, speed)
@@ -81,7 +78,7 @@ def hand_lbutton(client, speed):
     client.send_message("left", [speed])
 
 def hand_sbutton(client):
-    client.send_message("stop", []) 
+    client.send_message("stop", [])
 
 def hand_rbutton(client, speed):
     client.send_message("right", [speed])

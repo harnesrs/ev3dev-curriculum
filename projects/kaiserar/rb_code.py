@@ -13,16 +13,11 @@ def mqtt_connect():
     client.connect_to_pc()
 
 class Delagate(object):
-    def __init__(self):
+    def __init__(self, robot):
         self.mode = 'mqtt'
-        self.robot = robo.Snatch3r
+        self.robot = robot
     def forward(self, lspeed, rspeed):
-        while True:
-            self.robot.forward_drive(lspeed, rspeed)
-            if self.robot.ir_sensor.proximity() < 50:
-                break
-            time.sleep(0.1)
-        self.stop()
+        self.robot.forward_drive(lspeed, rspeed)
     def left(self, lspeed):
         self.robot.left_drive(lspeed)
     def right(self, rspeed):
@@ -36,10 +31,17 @@ class Delagate(object):
 def main():
 
     # mqtt connect
-    delegate = Delagate()
+    robot = robo.Snatch3r
+    delegate = Delagate(robot)
     client = com.MqttClient(delegate)
     client.connect_to_pc()
 
-    #
+    while True:
+        #mqtt mode
+        while delegate.mode == 'mqtt':
+            if robot.ir_sensor.proximity < 50:
+                robot.stop()
+                robot.drive_inches(-8, 800)
+                client.send_message("display_message", ["Too close to wall. Turn and continue."])
 
 main()

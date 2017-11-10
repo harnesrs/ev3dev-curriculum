@@ -58,6 +58,6 @@ def main():
                 robot.drive_inches(-8, 800)
                 client.send_message("display_message", ["Too close to wall. Turn and continue."])
         while delegate.mode == 'ir':
-            
+
 
 main()

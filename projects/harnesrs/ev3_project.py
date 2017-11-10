@@ -17,13 +17,16 @@ class MyDelegate(object):
 
     def __init__(self):
         self.direction = 0
+        self.drive = False
 
     def drive_button(self):
         robot.forward_drive(300, 300)
+        self.drive = True
         ev3.Sound.speak('Driving').wait()
 
     def stop_button(self):
         robot.stop()
+        self.drive = False
         ev3.Sound.speak('Stopping').wait()
 
     def left_color(self, color):
@@ -46,33 +49,31 @@ def main():
 
     btn = ev3.Button()
 
-    direction = 0
-
     while True:
         if btn.up:
             print('Up button')
-            handle_up_button(mqtt_client, direction)
+            handle_up_button(mqtt_client, my_delegate)
             time.sleep(3)
         if btn.down:
             print('Down button')
-            handle_down_button(mqtt_client, direction)
+            handle_down_button(mqtt_client, my_delegate)
             time.sleep(3)
         if btn.right:
             print('Right button')
-            handle_right_button(mqtt_client, direction)
+            handle_right_button(mqtt_client, my_delegate)
             time.sleep(3)
         if btn.left:
             print('Left button')
-            handle_left_button(mqtt_client, direction)
+            handle_left_button(mqtt_client, my_delegate)
             time.sleep(3)
 
         if robot.color_sensor.color == left_color:
             print('Turning left')
-            turn_left(mqtt_client, direction)
+            turn_left(mqtt_client, my_delegate)
             time.sleep(3)
         if robot.color_sensor.color == right_color:
             print('Turning right')
-            turn_right(mqtt_client, direction)
+            turn_right(mqtt_client, my_delegate)
             time.sleep(3)
 
         if btn.backspace:
@@ -80,40 +81,46 @@ def main():
             robot.shutdown()
             break
 
-def handle_up_button(mqtt_client, direction):
+def handle_up_button(mqtt_client, my_delegate):
     mqtt_client.send_message('turn_forward')
-    degrees = (direction * 90) % 360
+    degrees = (my_delegate.direction * 90) % 360
     robot.turn_degrees(-degrees, 300)
-    direction = 0
-    robot.forward_drive(300, 300)
+    my_delegate.direction = 0
+    if my_delegate.drive:
+        robot.forward_drive(300, 300)
 
-def handle_down_button(mqtt_client, direction):
+def handle_down_button(mqtt_client, my_delegate):
     mqtt_client.send_message('turn_backward')
-    degrees = (direction * 90) % 360 + 180
+    degrees = (my_delegate.direction * 90) % 360 + 180
     robot.turn_degrees(-degrees, 300)
-    direction = 2
-    robot.forward_drive(300, 300)
+    my_delegate.direction = 2
+    if my_delegate.drive:
+        robot.forward_drive(300, 300)
 
-def handle_right_button(mqtt_client, direction):
+def handle_right_button(mqtt_client, my_delegate):
     mqtt_client.send_message('turn_right')
-    degrees = (direction * 90) % 360 + 90
+    degrees = (my_delegate.direction * 90) % 360 + 90
     robot.turn_degrees(-degrees, 300)
-    direction = 1
-    robot.forward_drive(300, 300)
+    my_delegate.direction = 1
+    if my_delegate.drive:
+        robot.forward_drive(300, 300)
 
-def handle_left_button(mqtt_client, direction):
+def handle_left_button(mqtt_client, my_delegate):
     mqtt_client.send_message('turn_left')
-    degrees = (direction * 90) % 360 + 270
+    degrees = (my_delegate.direction * 90) % 360 + 270
     robot.turn_degrees(-degrees, 300)
-    direction = 3
-    robot.forward_drive(300, 300)
+    my_delegate.direction = 3
+    if my_delegate.drive:
+        robot.forward_drive(300, 300)
 
-def turn_left(mqtt_client, direction):
-    robot.turn_degrees(90, 300)
-    direction = direction + 1
+def turn_left(mqtt_client, my_delegate):
+    if my_delegate.drive:
+        robot.turn_degrees(90, 300)
+        my_delegate.direction = my_delegate.direction + 1
 
-def turn_right(mqtt_client, direction):
-    robot.turn_degrees(-90, 300)
-    direction = direction - 1
+def turn_right(mqtt_client, my_delegate):
+    if my_delegate.drive:
+        robot.turn_degrees(-90, 300)
+        my_delegate.direction = my_delegate.direction - 1
 
 main()

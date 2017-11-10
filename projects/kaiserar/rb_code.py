@@ -26,6 +26,20 @@ class Delagate(object):
         self.robot.stop()
     def reverse(self, lspeed, rspeed):
         self.robot.reverse_drive(lspeed, rspeed)
+    def up(self):
+        self.robot.arm_up()
+    def down(self):
+        self.robot.arm_down()
+    def cal(self):
+        self.robot.arm_calibration()
+    def switch_mode_ir(self):
+        self.mode = 'ir'
+    def switch_mode_mqtt(self):
+        self.mode = 'mqtt'
+    def switch_mode_off(self):
+        self.mode = 'off'
+    def off(self):
+        pass
 
 
 def main():
@@ -43,5 +57,7 @@ def main():
                 robot.stop()
                 robot.drive_inches(-8, 800)
                 client.send_message("display_message", ["Too close to wall. Turn and continue."])
+        while delegate.mode == 'ir':
+            
 
 main()

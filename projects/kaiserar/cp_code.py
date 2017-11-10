@@ -9,11 +9,14 @@ from tkinter import ttk
 
 
 
-class Delegate(object, y):
-    def __init__(self):
-        pass
+class Delegate(object):
+    def __init__(self, y, root):
+        self.y = y
+        self.root = root
     def display_message(self, string):
-        pass
+        self.y.set(string)
+
+
 
 
 
@@ -44,10 +47,20 @@ def main():
     mlabel = ttk.Label(frame1, textvariable=y)
     y.set("")
     mlabel.grid(row=4, column=1)
+    ibutton = ttk.Button(frame1, text="IR Mode")
+    ibutton.grid(row=6, column=2)
+    ubutton = ttk.Button(frame1, text="Arm Up")
+    ubutton.grid(row=5, column=0)
+    dbutton = ttk.Button(frame1, text="Arm Down")
+    dbutton.grid(row=5, column=2)
+    cbutton = ttk.Button(frame1, text="Calibrate Arm")
+    cbutton.grid(row=5, column=1)
+    obutton = ttk.Button(frame1, text="End")
+    obutton.grid(row=6, column=0)
 
 
     # mqtt connect
-    delegate = Delegate(y)
+    delegate = Delegate(y, root)
     client = com.MqttClient(delegate)
     client.connect_to_ev3()
 
@@ -56,14 +69,34 @@ def main():
     # tkinter buttons
     fbutton['command'] = lambda: hand_fbutton(client, speed)
     root.bind('<Up>', lambda event: hand_fbutton(client, speed))
+
     lbutton['command'] = lambda: hand_lbutton(client, speed)
     root.bind('<Left>', lambda event: hand_lbutton(client, speed))
+
     sbutton['command'] = lambda: hand_sbutton(client)
     root.bind('<space>', lambda event: hand_sbutton(client))
+
     rbutton['command'] = lambda: hand_rbutton(client, speed)
     root.bind('<Right>', lambda event: hand_rbutton(client, speed))
+
     bbutton['command'] = lambda: hand_bbutton(client, speed)
     root.bind('<Down>', lambda event: hand_bbutton(client, speed))
+
+    ubutton['command'] = lambda: hand_ubutton(client)
+    root.bind('<u>', lambda event: hand_ubutton(client))
+
+    dbutton['command'] = lambda: hand_dbutton(client)
+    root.bind('<d>', lambda event: hand_dbutton(client))
+
+    cbutton['command'] = lambda: hand_cbutton(client)
+    root.bind('<c>', lambda event: hand_cbutton(client))
+
+    ibutton['command'] = lambda: hand_ibutton(client)
+    root.bind('<i>', lambda event: hand_ibutton(client))
+
+    obutton['command'] = lambda: hand_obutton(client)
+    root.bind('<o>', lambda event: hand_obutton(client))
+
 
 
     root.mainloop()
@@ -85,6 +118,21 @@ def hand_rbutton(client, speed):
 
 def hand_bbutton(client, speed):
     client.send_message("reverse", [speed, speed])
+
+def hand_ubutton(client):
+    client.send_message("up", [])
+
+def hand_dbutton(client):
+    client.send_message("down", [])
+
+def hand_cbutton(client):
+    client.send_message("cal", [])
+
+def hand_ibutton(client):
+    client.send_message("switch_mode_ir", [])
+
+def hand_obutton(client):
+    client.send_message("switch_mode_off", [])
 
 
 main()

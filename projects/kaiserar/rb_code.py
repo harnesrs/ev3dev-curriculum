@@ -84,9 +84,15 @@ def handle_calibrate_button(button_state, robot):
         robot.arm_calibration()
 
 
+def handle_mode_change(state, robot):
+    if state:
+        robot.mode = 'mqtt'
+
+
 def main():
 
     robot = robo.Snatch3r
+    ev3.Sound.speak("Starting")
 
     # IR remote
     rc1 = ev3.RemoteControl(channel=1)
@@ -99,6 +105,7 @@ def main():
     rc2.on_red_up = lambda state: handle_arm_up_button(state, robot)
     rc2.on_red_down = lambda state: handle_arm_down_button(state, robot)
     rc2.on_blue_up = lambda state: handle_calibrate_button(state, robot)
+    rc4.on_red_up = lambda state: handle_mode_change(state, robot)
 
     # mqtt connect
     delegate = Delagate(robot)
@@ -106,9 +113,8 @@ def main():
     client.connect_to_pc()
 
 
-
-    while True:
-        #mqtt mode
+    while delegate.mode != 'off':
+        # mqtt mode
         while delegate.mode == 'mqtt':
             if robot.ir_sensor.proximity < 50:
                 robot.stop()
@@ -119,9 +125,11 @@ def main():
                 client.send_message("display_message", ["Too close to wall. Turn and continue."])
                 ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
                 ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
+        # IR mode
         while delegate.mode == 'ir':
             rc1.process()
             rc2.process()
+    robot.shutdown()
 
 
 main()

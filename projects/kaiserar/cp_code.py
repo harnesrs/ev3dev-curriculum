@@ -64,23 +64,22 @@ def main():
     client = com.MqttClient(delegate)
     client.connect_to_ev3()
 
-    speed = sbox.get() * 100
 
     # tkinter buttons
-    fbutton['command'] = lambda: hand_fbutton(client, speed)
-    root.bind('<Up>', lambda event: hand_fbutton(client, speed))
+    fbutton['command'] = lambda: hand_fbutton(client, get_speed(sbox))
+    root.bind('<Up>', lambda event: hand_fbutton(client, get_speed(sbox)))
 
-    lbutton['command'] = lambda: hand_lbutton(client, speed)
-    root.bind('<Left>', lambda event: hand_lbutton(client, speed))
+    lbutton['command'] = lambda: hand_lbutton(client, get_speed(sbox))
+    root.bind('<Left>', lambda event: hand_lbutton(client, get_speed(sbox)))
 
     sbutton['command'] = lambda: hand_sbutton(client)
     root.bind('<space>', lambda event: hand_sbutton(client))
 
-    rbutton['command'] = lambda: hand_rbutton(client, speed)
-    root.bind('<Right>', lambda event: hand_rbutton(client, speed))
+    rbutton['command'] = lambda: hand_rbutton(client, get_speed(sbox))
+    root.bind('<Right>', lambda event: hand_rbutton(client, get_speed(sbox)))
 
-    bbutton['command'] = lambda: hand_bbutton(client, speed)
-    root.bind('<Down>', lambda event: hand_bbutton(client, speed))
+    bbutton['command'] = lambda: hand_bbutton(client, get_speed(sbox))
+    root.bind('<Down>', lambda event: hand_bbutton(client, get_speed(sbox)))
 
     ubutton['command'] = lambda: hand_ubutton(client)
     root.bind('<u>', lambda event: hand_ubutton(client))
@@ -133,6 +132,10 @@ def hand_ibutton(client):
 
 def hand_obutton(client):
     client.send_message("switch_mode_off", [])
+
+def get_speed(sbox):
+    speed = sbox.get() * 100
+    return speed
 
 
 main()

@@ -84,6 +84,11 @@ def handle_mode_change(state, robot):
         robot.mode = 'mqtt'
 
 
+def handle_turn_off(state, robot):
+    if state:
+        robot.mode = 'off'
+
+
 # noinspection PyArgumentList
 def main():
 
@@ -102,6 +107,7 @@ def main():
     rc2.on_red_down = lambda state: handle_arm_down_button(state, robot)
     rc2.on_blue_up = lambda state: handle_calibrate_button(state, robot)
     rc4.on_red_up = lambda state: handle_mode_change(state, robot)
+    rc4.on_blue_down = lambda state: handle_turn_off(state, robot)
 
     # mqtt connect
     delegate = Delagate(robot)

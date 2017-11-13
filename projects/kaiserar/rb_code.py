@@ -7,12 +7,6 @@ import robot_controller as robo
 
 
 
-def mqtt_connect():
-    delegate = Delagate()
-    client = com.MqttClient(delegate)
-    client.connect_to_pc()
-
-
 class Delagate(object):
     def __init__(self, robot):
         self.mode = 'mqtt'
@@ -35,6 +29,7 @@ class Delagate(object):
         self.robot.arm_calibration()
     def switch_mode_ir(self):
         self.mode = 'ir'
+        print("ir")
     def switch_mode_mqtt(self):
         self.mode = 'mqtt'
     def switch_mode_off(self):
@@ -89,9 +84,10 @@ def handle_mode_change(state, robot):
         robot.mode = 'mqtt'
 
 
+# noinspection PyArgumentList
 def main():
 
-    robot = robo.Snatch3r
+    robot = robo.Snatch3r()
     ev3.Sound.speak("Starting")
 
     # IR remote
@@ -129,6 +125,8 @@ def main():
         while delegate.mode == 'ir':
             rc1.process()
             rc2.process()
+            rc4.process()
+            time.sleep(0.01)
     robot.shutdown()
 
 

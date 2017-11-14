@@ -11,6 +11,7 @@ class Delagate(object):
     def __init__(self, robot):
         self.mode = 'mqtt'
         self.robot = robot
+        self.arm_state = ''
     def forward(self, lspeed, rspeed):
         self.robot.forward_drive(lspeed, rspeed)
     def left(self, lspeed):
@@ -22,11 +23,15 @@ class Delagate(object):
     def reverse(self, lspeed, rspeed):
         self.robot.reverse_drive(lspeed, rspeed)
     def up(self):
+        self.arm_state = 'up'
         self.robot.arm_up()
     def down(self):
         self.robot.arm_down()
+        self.arm_state = 'down'
     def cal(self):
+        self.arm_state = 'up'
         self.robot.arm_calibration()
+        self.arm_state = 'down'
     def switch_mode_ir(self):
         self.mode = 'ir'
         print("ir")
@@ -114,19 +119,23 @@ def main():
     client = com.MqttClient(delegate)
     client.connect_to_pc()
 
+    ev3.Leds.all_off()
+    robot.arm_calibration()
+    delegate.arm_state = 'down'
 
     while delegate.mode != 'off':
         # mqtt mode
         while delegate.mode == 'mqtt':
-            if robot.ir_sensor.proximity < 50:
-                robot.stop()
-                ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.RED)
-                ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.RED)
-                robot.drive_inches(-8, 800)
-                ev3.Sound.speak("Backing up")
-                client.send_message("display_message", ["Too close to wall. Turn and continue."])
-                ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
-                ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
+            if delegate.arm_state == 'down':
+                if robot.ir_sensor.proximity < 50:
+                    robot.stop()
+                    ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.RED)
+                    ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.RED)
+                    robot.drive_inches(-8, 800)
+                    ev3.Sound.speak("Backing up")
+                    client.send_message("display_message", ["Too close to wall. Turn and continue."])
+                    ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
+                    ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
         # IR mode
         while delegate.mode == 'ir':
             rc1.process()

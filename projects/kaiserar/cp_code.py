@@ -57,6 +57,8 @@ def main():
     cbutton.grid(row=5, column=1)
     obutton = ttk.Button(frame1, text="End")
     obutton.grid(row=6, column=0)
+    reset = ttk.Button(frame1, text="Reset")
+    reset.grid(row=6, column=1)
 
 
     # mqtt connect
@@ -95,6 +97,10 @@ def main():
 
     obutton['command'] = lambda: hand_obutton(client)
     root.bind('<o>', lambda event: hand_obutton(client))
+
+    reset['command'] = lambda: hand_reset(y)
+    root.bind('<BackSpace>', lambda event: hand_reset(y))
+
 
 
 
@@ -136,6 +142,9 @@ def hand_obutton(client):
 def get_speed(sbox):
     speed = sbox.get() * 100
     return speed
+
+def hand_reset(y):
+    y.set("")
 
 
 main()

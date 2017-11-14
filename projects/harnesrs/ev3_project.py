@@ -37,6 +37,9 @@ class MyDelegate(object):
     def find_direction(self):
         print('I am facing', self.direction_list[self.direction])
 
+    def shutdown(self):
+        robot.shutdown()
+
 
 def main():
 
@@ -47,6 +50,8 @@ def main():
     mqtt_client.connect_to_pc()
 
     btn = ev3.Button()
+
+    robot.arm_down()
 
     while True:
         if btn.up:
@@ -79,6 +84,9 @@ def main():
         if btn.backspace:
             print('Backspace')
             robot.shutdown()
+            break
+
+        if robot.running == False:
             break
 
 def handle_up_button(mqtt_client, my_delegate):
@@ -120,13 +128,18 @@ def turn_left(mqtt_client, my_delegate):
         # print('before turning left direction is:', my_delegate.direction)
         my_delegate.direction = (my_delegate.direction + 3) % 4
         robot.turn_degrees(90, 300)
-        # print('after turning left direction is:', my_delegate.direction)
+        robot.left_motor.wait_while(ev3.Motor.STATE_RUNNING)
+        robot.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
         robot.forward_drive(300, 300)
+        time.sleep(2)
 
 def turn_right(mqtt_client, my_delegate):
     if my_delegate.drive:
         my_delegate.direction = (my_delegate.direction + 1) % 4
-        robot.turn_degrees(-90, 300)
+        robot.turn_degrees(720, 300)
+        robot.left_motor.wait_while(ev3.Motor.STATE_RUNNING)
+        robot.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
         robot.forward_drive(300, 300)
+        time.sleep(2)
 
 main()

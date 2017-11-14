@@ -56,7 +56,7 @@ def main():
     blue_right.grid(row=0, column=5)
     blue_right.invoke()
 
-    green_right = ttk.Radiobutton(main_frame, text='Green', variable =  right, value = 3)
+    green_right = ttk.Radiobutton(main_frame, text='Green', variable = right, value = 3)
     green_right.grid(row=0, column=6)
 
     set_right_color = ttk.Button(main_frame, text = 'Set right color')
@@ -64,11 +64,11 @@ def main():
     set_right_color['command'] = lambda: set_right_color_button(mqtt_client, int(right.get()), color_list)
 
     drive_button = ttk.Button(main_frame, text = 'Drive')
-    drive_button.grid(row = 3, column = 2)
+    drive_button.grid(row = 4, column = 2)
     drive_button['command'] = lambda: handle_drive_button(mqtt_client)
 
     stop_button = ttk.Button(main_frame, text = 'Stop')
-    stop_button.grid(row = 3, column = 4)
+    stop_button.grid(row = 4, column = 4)
     stop_button['command'] = lambda: handle_stop_button(mqtt_client)
 
     direction = ttk.Button(main_frame, text = 'Direction')
@@ -76,12 +76,8 @@ def main():
     direction['command'] = lambda: direction_button(mqtt_client)
 
     quit_button = ttk.Button(main_frame, text = 'Quit')
-    quit_button.grid(row = 5, column = 2)
-    quit_button['command'] = lambda: quit_program(mqtt_client, False)
-
-    exit_button = ttk.Button(main_frame, text = 'Exit')
-    exit_button.grid(row = 5, column = 4)
-    exit_button['command'] = lambda: quit_program(mqtt_client, True)
+    quit_button.grid(row = 5, column = 4)
+    quit_button['command'] = lambda: quit_program(mqtt_client, True)
 
     root.mainloop()
 
@@ -106,7 +102,7 @@ def direction_button(mqtt_client):
 
 def quit_program(mqtt_client, shutdown_ev3):
     if shutdown_ev3:
-        print("shutdown")
+        print("Shutdown")
         mqtt_client.send_message("shutdown")
     mqtt_client.close()
     exit()

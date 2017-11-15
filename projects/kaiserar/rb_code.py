@@ -12,6 +12,7 @@ class Delagate(object):
         self.mode = 'ir'
         self.robot = robot
         self.arm_state = ''
+        self.a = 'no'
     def forward(self, lspeed, rspeed):
         self.robot.forward_drive(lspeed, rspeed)
     def left(self, lspeed):
@@ -42,6 +43,13 @@ class Delagate(object):
         ev3.Sound.speak('m q t t')
     def switch_mode_off(self):
         self.mode = 'off'
+    def switch_grab(self):
+        if self.a == 'no':
+            self.a = 'grab'
+            ev3.Sound.speak("Ready to Pick Up")
+        else:
+            self.a = 'no'
+            ev3.Sound.speak("Drive")
 
 
 def handle_left_drive(state, robot):
@@ -134,16 +142,17 @@ def main():
             time.sleep(0.01)
         # mqtt mode
         while delegate.mode == 'mqtt':
-            if delegate.arm_state == 'down':
-                if robot.ir_sensor.proximity < 50:
-                    robot.stop()
-                    ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.RED)
-                    ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.RED)
-                    ev3.Sound.speak("Backing up")
-                    robot.drive_inches(-8, 800)
-                    client.send_message("display_message", ["Too close to wall. Turn and continue."])
-                    ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
-                    ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
+            if delegate.a == 'no':
+                if delegate.arm_state == 'down':
+                    if robot.ir_sensor.proximity < 50:
+                        robot.stop()
+                        ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.RED)
+                        ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.RED)
+                        ev3.Sound.speak("Backing up")
+                        robot.drive_inches(-8, 800)
+                        client.send_message("display_message", ["Too close to wall. Turn and continue."])
+                        ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
+                        ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
     robot.shutdown()
 
 

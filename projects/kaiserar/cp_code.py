@@ -50,15 +50,17 @@ def main():
     ibutton = ttk.Button(frame1, text="IR Mode")
     ibutton.grid(row=6, column=2)
     ubutton = ttk.Button(frame1, text="Arm Up")
-    ubutton.grid(row=5, column=0)
+    ubutton.grid(row=0, column=3)
     dbutton = ttk.Button(frame1, text="Arm Down")
-    dbutton.grid(row=5, column=2)
+    dbutton.grid(row=2, column=3)
     cbutton = ttk.Button(frame1, text="Calibrate Arm")
-    cbutton.grid(row=5, column=1)
+    cbutton.grid(row=1, column=3)
     obutton = ttk.Button(frame1, text="End")
     obutton.grid(row=6, column=0)
     reset = ttk.Button(frame1, text="Reset")
     reset.grid(row=6, column=1)
+    gbutton = ttk.Button(frame1, text="Grab")
+    gbutton.grid(row=3, column=3)
 
 
     # mqtt connect
@@ -100,6 +102,9 @@ def main():
 
     reset['command'] = lambda: hand_reset(y)
     root.bind('<BackSpace>', lambda event: hand_reset(y))
+
+    gbutton['command'] = lambda: hand_gbutton(client)
+    root.bind('<Return>', lambda event: hand_gbutton(client))
 
 
 
@@ -145,6 +150,9 @@ def get_speed(sbox):
 
 def hand_reset(y):
     y.set("")
+
+def hand_gbutton(client):
+    client.send_message("switch_grab", [])
 
 
 main()

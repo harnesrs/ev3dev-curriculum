@@ -9,7 +9,7 @@ import robot_controller as robo
 
 class Delagate(object):
     def __init__(self, robot):
-        self.mode = 'mqtt'
+        self.mode = 'ir'
         self.robot = robot
         self.arm_state = ''
     def forward(self, lspeed, rspeed):
@@ -35,8 +35,11 @@ class Delagate(object):
     def switch_mode_ir(self):
         self.mode = 'ir'
         print("ir")
+        ev3.Sound.speak('I r')
     def switch_mode_mqtt(self):
         self.mode = 'mqtt'
+        print('mqtt')
+        ev3.Sound.speak('m q t t')
     def switch_mode_off(self):
         self.mode = 'off'
 
@@ -84,17 +87,16 @@ def handle_calibrate_button(button_state, robot):
         robot.arm_calibration()
 
 
-def handle_mode_change(state, robot):
+def handle_mode_change(state, delegate):
     if state:
-        robot.mode = 'mqtt'
+        delegate.switch_mode_mqtt()
 
 
-def handle_turn_off(state, robot):
+def handle_turn_off(state, delegate):
     if state:
-        robot.mode = 'off'
+        delegate.switch_mode_off()
 
 
-# noinspection PyArgumentList
 def main():
 
     robot = robo.Snatch3r()
@@ -111,8 +113,8 @@ def main():
     rc2.on_red_up = lambda state: handle_arm_up_button(state, robot)
     rc2.on_red_down = lambda state: handle_arm_down_button(state, robot)
     rc2.on_blue_up = lambda state: handle_calibrate_button(state, robot)
-    rc4.on_red_up = lambda state: handle_mode_change(state, robot)
-    rc4.on_blue_down = lambda state: handle_turn_off(state, robot)
+    rc4.on_red_up = lambda state: handle_mode_change(state, delegate)
+    rc4.on_blue_down = lambda state: handle_turn_off(state, delegate)
 
     # mqtt connect
     delegate = Delagate(robot)
@@ -124,6 +126,12 @@ def main():
     delegate.arm_state = 'down'
 
     while delegate.mode != 'off':
+        # IR mode
+        while delegate.mode == 'ir':
+            rc1.process()
+            rc2.process()
+            rc4.process()
+            time.sleep(0.01)
         # mqtt mode
         while delegate.mode == 'mqtt':
             if delegate.arm_state == 'down':
@@ -131,17 +139,11 @@ def main():
                     robot.stop()
                     ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.RED)
                     ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.RED)
-                    robot.drive_inches(-8, 800)
                     ev3.Sound.speak("Backing up")
+                    robot.drive_inches(-8, 800)
                     client.send_message("display_message", ["Too close to wall. Turn and continue."])
                     ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
                     ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
-        # IR mode
-        while delegate.mode == 'ir':
-            rc1.process()
-            rc2.process()
-            rc4.process()
-            time.sleep(0.01)
     robot.shutdown()
 
 

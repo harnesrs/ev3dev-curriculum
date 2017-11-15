@@ -113,13 +113,13 @@ def hand_fbutton(client, speed):
     client.send_message("forward", [speed, speed])
 
 def hand_lbutton(client, speed):
-    client.send_message("left", [speed])
+    client.send_message("right", [speed])
 
 def hand_sbutton(client):
     client.send_message("stop", [])
 
 def hand_rbutton(client, speed):
-    client.send_message("right", [speed])
+    client.send_message("left", [speed])
 
 def hand_bbutton(client, speed):
     client.send_message("reverse", [speed, speed])
